@@ -8,6 +8,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {SIG_VALIDATION_FAILED, SIG_VALIDATION_SUCCESS} from "lib/account-abstraction/contracts/core/Helpers.sol";
 import {IEntryPoint} from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract MinimalAccount is IAccount, Ownable {
 
@@ -46,7 +47,7 @@ contract MinimalAccount is IAccount, Ownable {
     }
 
     // A signature is valid, if signature = MinimalAccount owner (However you can change it to anyone)
-    function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash, uint256 missingAccountFunds) external  returns (uint 256 validationData) {
+    function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash, uint256 missingAccountFunds) external  returns (uint256 validationData) {
         validationData = _validateSignature(userOp,userOpHash);
         // _validateNonce();
         _payPrefund(missingAccountFunds);
