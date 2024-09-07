@@ -9,7 +9,7 @@ import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 import {SendPackedUserOp, PackedUserOperation, IEntryPoint} from "script/SendPackedUserOp.s.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
-// import {ZkSyncChainChecker} from "lib/foundry-devops/src/ZkSyncChainChecker.sol";
+import {ZkSyncChainChecker} from "lib/foundry-devops/src/ZkSyncChainChecker.sol";
 
 contract MinimalAccountTest is Test {
     using MessageHashUtils for bytes32;
@@ -24,7 +24,7 @@ contract MinimalAccountTest is Test {
     uint256 constant AMOUNT = 1e18;
 
     function setUp() public 
-    // skipZkSync 
+    skipZkSync 
     {
         DeployMinimal deployMinimal = new DeployMinimal();
         (helperConfig, minimalAccount) = deployMinimal.deployMinimalAccount();
@@ -70,7 +70,7 @@ contract MinimalAccountTest is Test {
     }
 
     function testRecoverSignedOp() public 
-    // skipZkSync 
+    skipZkSync 
     {
         // Arrange
         assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -95,7 +95,7 @@ contract MinimalAccountTest is Test {
     // 2. Call validate userops
     // 3. Assert the return is correct
     function testValidationOfUserOps() public 
-    // skipZkSync 
+    skipZkSync 
     {
         // Arrange
         assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -117,7 +117,7 @@ contract MinimalAccountTest is Test {
     }
 
     function testEntryPointCanExecuteCommands() public 
-    // skipZkSync 
+    skipZkSync 
     {
         // Arrange
         assertEq(usdc.balanceOf(address(minimalAccount)), 0);
