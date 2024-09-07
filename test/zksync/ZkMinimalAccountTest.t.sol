@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -79,7 +78,7 @@ contract ZkMinimalAccountTest is Test, ZkSyncChainChecker {
     //////////////////////////////////////////////////////////////*/
     function _signTransaction(Transaction memory transaction) internal view returns (Transaction memory) {
         bytes32 unsignedTransactionHash = MemoryTransactionHelper.encodeHash(transaction);
-        
+
         uint8 v;
         bytes32 r;
         bytes32 s;

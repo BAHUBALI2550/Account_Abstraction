@@ -8,7 +8,7 @@ import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 contract HelperConfig is Script {
     error HelperConfig__InvalidChainId();
 
-    struct  NetworkConfig {
+    struct NetworkConfig {
         address entryPoint;
         address usdc;
         address account;
@@ -26,7 +26,7 @@ contract HelperConfig is Script {
     address constant ANVIL_DEFAULT_ACCOUNT = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
 
     NetworkConfig public localNetworkConfig;
-    mapping (uint256 chainId => NetworkConfig) public networkConfigs;
+    mapping(uint256 chainId => NetworkConfig) public networkConfigs;
 
     constructor() {
         networkConfigs[ETH_SEPOLIA_CHAIN_ID] = getEthSepoliaConfig();
@@ -85,6 +85,7 @@ contract HelperConfig is Script {
             account: BURNER_WALLET
         });
     }
+
     function getZkSyncConfig() public pure returns (NetworkConfig memory) {
         return NetworkConfig({
             entryPoint: address(0), // supports native AA, so no entry point needed
@@ -107,9 +108,7 @@ contract HelperConfig is Script {
         console2.log("Mocks deployed!");
 
         localNetworkConfig =
-            NetworkConfig({entryPoint: address(entryPoint), 
-            usdc: address(erc20Mock), 
-            account: ANVIL_DEFAULT_ACCOUNT});
+            NetworkConfig({entryPoint: address(entryPoint), usdc: address(erc20Mock), account: ANVIL_DEFAULT_ACCOUNT});
         return localNetworkConfig;
     }
 }

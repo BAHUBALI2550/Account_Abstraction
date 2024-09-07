@@ -23,16 +23,14 @@ contract MinimalAccountTest is Test {
 
     uint256 constant AMOUNT = 1e18;
 
-    function setUp() public 
-    skipZkSync 
-    {
+    function setUp() public skipZkSync {
         DeployMinimal deployMinimal = new DeployMinimal();
         (helperConfig, minimalAccount) = deployMinimal.deployMinimalAccount();
         usdc = new ERC20Mock();
         sendPackedUserOp = new SendPackedUserOp();
     }
 
-     // USDC Mint
+    // USDC Mint
     // msg.sender -> MinimalAccount
     // approve some amount
     // USDC contract
@@ -40,38 +38,34 @@ contract MinimalAccountTest is Test {
 
     function testOwnerCanExecuteCommands() public {
         // Arrange
-        assertEq(usdc.balanceOf(address(minimalAccount)),0);
+        assertEq(usdc.balanceOf(address(minimalAccount)), 0);
         address dest = address(usdc);
         uint256 value = 0;
         bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
         // ACT
         vm.prank(minimalAccount.owner());
-        minimalAccount.execute(dest,value,functionData);
+        minimalAccount.execute(dest, value, functionData);
 
         // ASSERT
-        assertEq(usdc.balanceOf(address(minimalAccount)),AMOUNT);
-
+        assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
     }
 
     function testNonOwnerCannotExecuteCommands() public {
         // Arrange
-        assertEq(usdc.balanceOf(address(minimalAccount)),0);
+        assertEq(usdc.balanceOf(address(minimalAccount)), 0);
         address dest = address(usdc);
         uint256 value = 0;
         bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
         // ACT
         vm.prank(randomuser);
         vm.expectRevert(MinimalAccount.MinimalAccount__NotFromEntryPointOrOwner.selector);
-        minimalAccount.execute(dest,value,functionData);
+        minimalAccount.execute(dest, value, functionData);
 
         // ASSERT
-        assertEq(usdc.balanceOf(address(minimalAccount)),AMOUNT);
-
+        assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
     }
 
-    function testRecoverSignedOp() public 
-    skipZkSync 
-    {
+    function testRecoverSignedOp() public skipZkSync {
         // Arrange
         assertEq(usdc.balanceOf(address(minimalAccount)), 0);
         address dest = address(usdc);
@@ -94,9 +88,7 @@ contract MinimalAccountTest is Test {
     // 1. Sign user ops
     // 2. Call validate userops
     // 3. Assert the return is correct
-    function testValidationOfUserOps() public 
-    skipZkSync 
-    {
+    function testValidationOfUserOps() public skipZkSync {
         // Arrange
         assertEq(usdc.balanceOf(address(minimalAccount)), 0);
         address dest = address(usdc);
@@ -116,9 +108,7 @@ contract MinimalAccountTest is Test {
         assertEq(validationData, 0);
     }
 
-    function testEntryPointCanExecuteCommands() public 
-    skipZkSync 
-    {
+    function testEntryPointCanExecuteCommands() public skipZkSync {
         // Arrange
         assertEq(usdc.balanceOf(address(minimalAccount)), 0);
         address dest = address(usdc);
